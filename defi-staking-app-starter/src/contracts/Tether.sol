@@ -1,4 +1,4 @@
-// pragma solidity ^0.5.0;
+ pragma solidity ^0.5.0;
 
 
 contract Tether {
@@ -23,15 +23,18 @@ address indexed _owner,
     mapping (address => mapping(address => uint256)) public allowance;
 
     constructor () public  {
-        balanceof[msg.sender] += totalSupply ;
+        balanceof[msg.sender] += totalSupply;
     }
 
 
 
-function approve(address _spender, uint256 _value) {
 
-    
-}
+
+      function approve(address _spender,uint256 _value) public returns (bool success) {
+        allowance[msg.sender][_spender];
+        emit Approval(msg.sender, _spender, _value);
+        return true;
+      }
 
     function transfer(address _to,uint _value) public returns (bool success) {
         require(_value <= balanceof[msg.sender]);
@@ -41,12 +44,13 @@ function approve(address _spender, uint256 _value) {
         return true;
     }
 
-    function tranferFrom(address _from, address _to, uint256 _value) public {
+    function tranferFrom(address _from, address _to, uint256 _value) public  returns (bool success){
         require(_value <= balanceof[_from]);
         require(_value <= allowance[_from][msg.sender] );
         balanceof[_from] -= _value;
         balanceof[_to] += _value;
-        allowance[msg.sender][_from] -= _value;
+        allowance[_from][msg.sender] -= _value;
         emit Transfer( _from, _to, _value);
+        return true;
     }
 }
