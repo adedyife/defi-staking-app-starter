@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+// pragma solidity ^0.5.0;
 
 
 contract Tether {
@@ -10,32 +10,43 @@ contract Tether {
     event Transfer(
         address indexed _from,
         address indexed _to,
-        uint _value,
+        uint _value
     );
 
-    event Approve(
+    event Approval(
 address indexed _owner,
         address indexed _spender,
-        uint _value,
+        uint _value
     );
 
     mapping(address => uint256) public balanceof;
-    constructor () public{
+    mapping (address => mapping(address => uint256)) public allowance;
+
+    constructor () public  {
         balanceof[msg.sender] += totalSupply ;
     }
 
-error insufficientBal(uint requested, uint available);
 
-    function transfer(address _to,uint value) public returns (bool success) {
-        if (balanceof[msg.sender] > value) {
-           insufficientBal({
-            requested: value,
-            available: balanceof[msg.sender]
-           })
-        } 
-        balanceof[msg.sender] -= value;
-        balanceof[_to] += value;
-        
-        
+
+function approve(address _spender, uint256 _value) {
+
+    
+}
+
+    function transfer(address _to,uint _value) public returns (bool success) {
+        require(_value <= balanceof[msg.sender]);
+        balanceof[msg.sender] -= _value;
+        balanceof[_to] += _value;
+        emit Transfer( msg.sender, _to, _value);
+        return true;
+    }
+
+    function tranferFrom(address _from, address _to, uint256 _value) public {
+        require(_value <= balanceof[_from]);
+        require(_value <= allowance[_from][msg.sender] );
+        balanceof[_from] -= _value;
+        balanceof[_to] += _value;
+        allowance[msg.sender][_from] -= _value;
+        emit Transfer( _from, _to, _value);
     }
 }
