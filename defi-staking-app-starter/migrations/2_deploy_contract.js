@@ -1,4 +1,4 @@
-import DecentralBank from "../src/truffle_abis/DecentralBank.json";
+
 const Tether = artifacts.require("Tether");
 const RWD = artifacts.require("RWD");
 const DecentralBank = artifacts.require("DecentralBank");
@@ -17,5 +17,5 @@ module.exports = async function(deployer, network, accounts) {
   await rwd.transfer(Decentralbank.address, "1000000000000000000000000");
 
   // distribute 100 tether to investors
-  tether.transfer(accounts[1], "100000000000000000000");
+ await  tether.transfer(accounts[1], "100000000000000000000");
 };
