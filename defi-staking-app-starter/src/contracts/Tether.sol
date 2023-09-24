@@ -14,7 +14,7 @@ contract Tether {
     );
 
     event Approval(
-address indexed _owner,
+        address indexed _owner,
         address indexed _spender,
         uint _value
     );
