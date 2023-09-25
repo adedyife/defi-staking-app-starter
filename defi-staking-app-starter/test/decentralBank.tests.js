@@ -57,8 +57,8 @@ contract("DecentralBank", ([owner, customer]) => {
           "investor mock tether balance before staking"
         );
         // check staking customer
-        await tether.approve(decentralBank.address, tokens("50"), { from:customer});
-        await decentralBank.deposit(tokens("50"), {from:customer});
+        await tether.approve(decentralBank.address, tokens("50"), {from: customer});
+        await decentralBank.deposit(tokens("50"), { from: customer });
       });
     });
   });
