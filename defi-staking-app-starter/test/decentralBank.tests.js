@@ -40,12 +40,12 @@ contract("DecentralBank", ([owner, customer]) => {
   describe("DecentralaBank deploy ", async () => {
     it("Token available in customer wallet", async () => {
       const amount = await tether.balanceOf(customer);
-      assert.equal(amount, tokens("100", "ether"));
+      assert.equal(amount, tokens("100"));
     });
 
     it("Token available in Bank", async () => {
       const amount = await rwd.balanceOf(decentralBank.address);
-      assert.equal(amount, tokens("1000000", "ether"));
+      assert.equal(amount, tokens("1000000"));
     });
 
     describe("Yield farming", async () => {
@@ -53,12 +53,25 @@ contract("DecentralBank", ([owner, customer]) => {
         let result = await tether.balanceOf(customer);
         assert.equal(
           result.toString(),
-          tokens("100", "ether"),
+          tokens("100"),
           "investor mock tether balance before staking"
         );
         // check staking customer
-        await tether.approve(decentralBank.address, tokens("50"), {from: customer});
-        await decentralBank.deposit(tokens("50"), { from: customer });
+        let staking = await decentralBank.isStaking(customer)
+        assert.equal(staking, false)
+        await tether.approve(decentralBank.address, tokens("99"), {
+          from: customer,
+        });
+        await decentralBank.deposit(tokens("99"), { from: customer });
+
+        result = await tether.balanceOf(customer);
+        assert.equal(result.toString(), tokens("1"));
+        result = await tether.balanceOf(decentralBank.address);
+        assert.equal(result.toString(), tokens("99"));
+
+        // is staking test
+         staking = await decentralBank.isStaking(customer)
+        assert.equal(staking, true)
       });
     });
   });
