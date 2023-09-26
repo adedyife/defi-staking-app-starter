@@ -66,17 +66,24 @@ contract("DecentralBank", ([owner, customer]) => {
 
         result = await tether.balanceOf(customer);
         assert.equal(result.toString(), tokens("1"));
-        result = await tether.balanceOf(decentralBank.address);
+        result = await decentralBank.stakingBalance(customer);
         assert.equal(result.toString(), tokens("99"));
 
         // is staking test
          staking = await decentralBank.isStaking(customer)
         assert.equal(staking, true)
-        it("token rewarded successfully", async () => {
-          // await decentralBank.issueTokens()
-          const bal = await rwd.balanceOf(customer);
-          assert.equal(bal.toString(), tokens("10"));
-        });
+       
+          await decentralBank.issueTokens({from: owner})
+          describe("Check reward balance ", async () => {
+            it("Customer receved reward", async () => {
+              const bal = await rwd.balanceOf(customer);
+              assert.equal(bal.toString(), tokens("11"));
+            });
+          });
+        
+          
+          // await decentralBank.issueTokens({from: customer}).should.be.rejected
+          
       });
     });
 

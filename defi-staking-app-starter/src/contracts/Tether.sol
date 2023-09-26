@@ -43,7 +43,7 @@ contract Tether {
         address _to,
         uint256 _value
     ) public returns (bool success) {
-        require(_value <= balanceOf[_from], "Insuffucient balance");
+        require(_value <= balanceOf[_from], "Insufficient balance");
         require(_value <= allowance[_from][msg.sender], "Allowance exceeded");
         balanceOf[_from] -= _value;
         balanceOf[_to] += _value;
