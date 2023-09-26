@@ -72,7 +72,14 @@ contract("DecentralBank", ([owner, customer]) => {
         // is staking test
          staking = await decentralBank.isStaking(customer)
         assert.equal(staking, true)
+        it("token rewarded successfully", async () => {
+          // await decentralBank.issueTokens()
+          const bal = await rwd.balanceOf(customer);
+          assert.equal(bal.toString(), tokens("10"));
+        });
       });
     });
+
+  
   });
 });

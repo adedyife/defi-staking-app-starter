@@ -36,4 +36,16 @@ contract DecentralBank {
         isStaking[msg.sender] = true;
         hasStaked[msg.sender] = true;
     }
+
+    function issueTokens() public isOwner() {
+ for (uint256 i = 0; i < stakers.length; i++) {
+    address recipients = stakers[i];
+   uint balance = stakingBalance[recipients] / 9;
+   if (balance > 0) {
+   rwd.transfer(recipients, balance);
+   }    
+
+ }
+        
+    }
 }
